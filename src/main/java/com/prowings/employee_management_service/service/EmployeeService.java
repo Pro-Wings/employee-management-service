@@ -1,8 +1,11 @@
 package com.prowings.employee_management_service.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.prowings.employee_management_service.entity.Employee;
@@ -77,4 +80,16 @@ public class EmployeeService {
     public List<Employee> getEmployeesByDepartments(List<String> departments) {
         return employeeRepository.findByDepartmentIn(departments);
     }
+
+    public List<Employee> getEmployeesBeforeJoiningDate(LocalDate date) {
+    	return employeeRepository.findByDateOfJoiningBefore(date);
+    }
+
+    public List<Employee> getEmployeesBetweenJoiningDate(LocalDate start, LocalDate end) {
+    	return employeeRepository.findByDateOfJoiningBetween(start, end);
+    }
+
+	public Page<Employee> findAll(Pageable pageable) {
+		return employeeRepository.findAll(pageable);
+	}
 }

@@ -1,8 +1,10 @@
 package com.prowings.employee_management_service.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +81,22 @@ public class EmployeeController {
 	public List<Employee> getEmployeeBySalaryGreaterThan(@PathVariable Double salary) {
 		log.info("Received Request to get employees by salary greater than: {}", salary);
 		return employeeService.getEmployeesBySalaryGreaterThan(salary);
+	}
+
+	@GetMapping("/employees/by-joiningdate-before/{date}")
+	public List<Employee> getEmployeeBySalaryGreaterThan(@PathVariable String date) {
+		log.info("Received Request to get employees by joining date before: {}", date);
+		LocalDate parsedDate = LocalDate.parse(date);
+		log.info("Parsed Date: {}", parsedDate);
+		return employeeService.getEmployeesBeforeJoiningDate(parsedDate);
+	}
+
+	   @GetMapping("/employees/search/by-joining-date")
+	    public List<Employee> getEmployeesByJoiningDateRange(
+	            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+	            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+		log.info("Received Request to get employees by joining date between: {} and {}", startDate, endDate);
+		return employeeService.getEmployeesBetweenJoiningDate(startDate, endDate);
 	}
 	
 	
