@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.prowings.employee_management_service.entity.Employee;
@@ -22,6 +23,13 @@ public class EmployeeService {
 
 	public Employee saveEmployee(Employee employee) {
 		return employeeRepository.save(employee);
+	}
+
+	public List<Employee> getAllEmployeesSorted(String[] sort) {
+		Sort.Direction direction = sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC;
+		log.info("Sorting by : {}", sort[0]);
+		log.info("Sorting order : {}", direction);
+		return (List<Employee>) employeeRepository.findAll(Sort.by(direction, sort[0]));
 	}
 
 	public List<Employee> getAllEmployees() {

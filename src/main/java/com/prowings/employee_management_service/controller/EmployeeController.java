@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,10 +37,11 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/employees")
-	public List<Employee> getEmployees() {
-		log.info("Received Request to get all employees..");
-
-		return employeeService.getAllEmployees();
+	public List<Employee> getEmployees(@RequestParam(defaultValue = "id,asc") String[] sort) {
+        log.info("Received Request to get all employees with specified sorting..");
+        log.info(">>>>> Sorting by : {}", sort[0]);
+        log.info(">>>>> Sorting order : {}", sort[1]);
+		return employeeService.getAllEmployeesSorted(sort);
 	}
 
 	@GetMapping("/employees/{id}")
